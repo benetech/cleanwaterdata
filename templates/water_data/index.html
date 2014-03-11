@@ -1,0 +1,47 @@
+<html>
+
+{% load bootstrap3 %}
+{% bootstrap_css %} 
+{% bootstrap_javascript %}
+
+<div>
+	<h1> Benetech/Avina Clean Water Project Survey Data </h1>
+</div>
+
+<style>
+img {
+	position:absolute;
+	bottom:5px;
+	right:5px;
+}
+
+</style>
+
+<table class ="table table-bordered">
+	<thead>
+		<tr>
+			<th scope ="col">Survey Name</th>
+			<th scope ="col"># Submissions</th>
+			<th scope ="col">Download Link</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		{% for key, value in surveys.items %}
+		<tr>
+			<td>{{ key }}</a></td>
+			<td>{{ value.count }}</td>
+			<td>
+				{% if value.count > 0 %}
+				<a href="/surveydata/{{ value.id }}/">Download</a>
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+		
+	</tbody>
+</table>
+
+<img src="http://benetech.org/wp-content/uploads/2013/07/benetech-labs-logo-icon-300x112.png">
+
+</html>
