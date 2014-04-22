@@ -5,7 +5,7 @@
 {% bootstrap_javascript %}
 
 <div>
-	<h1> Benetech/Avina Clean Water Project Survey Data </h1>
+	<h1> Benetech/Avina Clean Water Project </h1>
 </div>
 
 <style>
@@ -21,6 +21,7 @@ img {
 	<thead>
 		<tr>
 			<th scope ="col">Survey Name</th>
+			<th scope ="col">Country Name</th>
 			<th scope ="col"># Submissions</th>
 			<th scope ="col">Download Link</th>
 		</tr>
@@ -30,10 +31,11 @@ img {
 		{% for key, value in surveys.items %}
 		<tr>
 			<td>{{ key }}</a></td>
+			<td>{{ value.country }}</td>
 			<td>{{ value.count }}</td>
 			<td>
 				{% if value.count > 0 %}
-				<a href="/surveydata/{{ value.id }}/">Download</a>
+				<a href="/surveydata/{{ value.countryID }}/{{ value.id }}/">Download</a>
 				{% endif %}
 			</td>
 		</tr>

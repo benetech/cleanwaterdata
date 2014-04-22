@@ -11,31 +11,57 @@ from xlutils.copy import copy
 from xlwt import Workbook, Formula
 from io import BytesIO
 
-def index(request):
-    url = "https://formhub.org/api/v1/data/adamb"
-    result = requests.get(url, auth=('adamb', 'benetechavina'))
-    data = json.loads(result.content)
+def index(request, country_name):
+    
+    if country_name == "costarica":
+        FHLogin = "cleanwatercr"
+        FHPass = "cleanwaterpass"
+    elif country_name == "ecuador":
+        FHLogin = "cleanwaterec"
+        FHPass = "cleanwaterpass"
         
+    url = "https://formhub.org/api/v1/data/" + FHLogin
+    result = requests.get(url, auth=(FHLogin, FHPass))
+    
+    data = json.loads(result.content)    
     surveyDict = {}
     
-    for key,value in data.iteritems():
-        dataDict = {}
-        result = requests.get(value, auth=('adamb', 'benetechavina'))
-        data = json.loads(result.content)
+    if data:
+        for key,value in data.iteritems():
+            dataDict = {}
+            result = requests.get(value, auth=(FHLogin, FHPass))
+            data = json.loads(result.content)
         
-        dataDict['id'] = value.split("/")[7]
-        dataDict['count'] = len(data)
+            dataDict['id'] = value.split("/")[7]
+            dataDict['count'] = len(data)
+            dataDict['countryID'] = country_name
+            
+            if FHLogin == "cleanwatercr":
+                dataDict['country'] = "Costa Rica"
+            elif FHLogin == "cleanwaterec":
+                dataDict['country'] = "Ecuador"
         
-        surveyDict[key] = dataDict
-         
+            surveyDict[key] = dataDict
+                     
     #what should actually be passed here is a dictionary with survey names and values links to results
     #then if it goes to one of those links calling the data, the url parser will process that data and dl the link
     context = {'surveys': surveyDict}    
     return render(request, 'water_data/index.html', context)
     #return HttpResponse(simplejson.dumps(data), mimetype='application/json')
-def dataDownload(request, survey_id):    
-    url = "https://formhub.org/api/v1/data/adamb/" + survey_id
-    result = requests.get(url, auth=('adamb', 'benetechavina'))
+    
+    
+    
+def dataDownload(request, survey_id, country_name):   
+    
+    if country_name == "costarica":
+        FHLogin = "cleanwatercr"
+        FHPass = "cleanwaterpass"
+    elif country_name == "ecuador":
+        FHLogin = "cleanwaterec"
+        FHPass = "cleanwaterpass"
+     
+    url = "https://formhub.org/api/v1/data/" + FHLogin + "/" + survey_id
+    result = requests.get(url, auth=(FHLogin, FHPass))
     data = json.loads(result.content)
 
     unzippedXls = BytesIO()
