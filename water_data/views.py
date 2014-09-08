@@ -11,6 +11,7 @@ from xlutils.copy import copy
 from xlwt import Workbook, Formula
 from io import BytesIO
 
+# Index displays the data on the first page
 def index(request, country_name):
     
     if country_name == "costarica":
@@ -69,18 +70,23 @@ def dataDownload(request, survey_id, country_name):
     zipf = zipfile.ZipFile(zipdata, mode='w')
         
     for responseNumber in range(0,len(data)):
-            
+                   
         book = Workbook()
         sheetWrite = book.add_sheet('Data')
     
         dataDictionary = data[responseNumber]
         questionDict = {}
+        
+                
          
         for key,value in dataDictionary.iteritems():
             if '/' in key:       
                 questionDict[key.split("/")[1]] = value
                 
 
+        #print(dataDictionary.get("which_groups"))
+        
+        
         NUM_PERSONAL = 6
         NUM_COMMUNITY = 23
         NUM_ADMINISTRATION = 42
@@ -166,20 +172,23 @@ def dataDownload(request, survey_id, country_name):
         sheetWrite.write(rowStart,1,"SANEAMIENTO AMBIENTAL")
         sheetWrite.write(rowStart,2,"OBSERVACIONES / COMENTARIOS")
         sheetWrite.write(rowStart,3,"CALIFICACION")
-
-        if("sanitation" in dataDictionary.get('which_groups')):   
-            for x in range (1, NUM_SANITATION + 1):
-                sheetWrite.write(x + rowStart, 3, float(questionDict.get('sanitation_question_' + str(x))))
-                sheetWrite.write(x + rowStart, 2, questionDict.get('sanitation_comment_' + str(x)))
-                sheetWrite.write(x + rowStart, 0, "E." + str(x))
-    
+        
+        sanitation_string = dataDictionary.get('which_groups')
+        
+        for x in sanitation_string.split(" "):
+            if x == "sanitation":                   
+                for x in range (1, NUM_SANITATION + 1):
+                    sheetWrite.write(x + rowStart, 3, float(questionDict.get('sanitation_question_' + str(x))))
+                    sheetWrite.write(x + rowStart, 2, questionDict.get('sanitation_comment_' + str(x)))
+                    sheetWrite.write(x + rowStart, 0, "E." + str(x))
+            
         rowStart += NUM_SANITATION + 4
-
+        
         sheetWrite.write(rowStart - 3, 0, 'PUNTAJE TOTAL')
         sheetWrite.write(rowStart - 3, 3, Formula('SuM(D106:D115)'))
 
         #--------------------------------------------#
-        #Sanitation Header       
+        #Sanitation Education Header       
         sheetWrite.write(rowStart,0,"#")
         sheetWrite.write(rowStart,1,"EDUCACION SANITARIA")
         sheetWrite.write(rowStart,2,"OBSERVACIONES / COMENTARIOS")
