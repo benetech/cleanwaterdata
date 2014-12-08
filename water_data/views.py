@@ -17,9 +17,9 @@ def index(request, country_name):
     if country_name == "costarica":
         FHLogin = "cleanwatercr"
         FHPass = "cleanwaterpass"
-    # elif country_name == "ecuador":
-    #     FHLogin = "cleanwaterec"
-    #     FHPass = "cleanwaterpass"
+    elif country_name == "ecuador":
+        FHLogin = "cleanwaterec"
+        FHPass = "cleanwaterpass"
     elif country_name == "adamb":
         FHLogin = "adamb"
         FHPass = "cleanwaterpass"
@@ -45,6 +45,8 @@ def index(request, country_name):
                 dataDict['country'] = "Costa Rica"
             elif FHLogin == "cleanwaterec":
                 dataDict['country'] = "Ecuador"
+            elif FHLogin == "adamb":
+                dataDict['country'] = "Adam B"
         
             surveyDict[key] = dataDict
                      
@@ -63,6 +65,9 @@ def dataDownload(request, survey_id, country_name):
         FHPass = "cleanwaterpass"
     elif country_name == "ecuador":
         FHLogin = "cleanwaterec"
+        FHPass = "cleanwaterpass"
+    elif country_name == "adamb":
+        FHLogin = "adamb"
         FHPass = "cleanwaterpass"
      
     url = "https://formhub.org/api/v1/data/" + FHLogin + "/" + survey_id
