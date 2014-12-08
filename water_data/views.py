@@ -20,6 +20,10 @@ def index(request, country_name):
     elif country_name == "ecuador":
         FHLogin = "cleanwaterec"
         FHPass = "cleanwaterpass"
+    elif country_name == "adamb":
+        FHLogin = "adamb"
+        FHPass = "cleanwaterpass"
+        
         
     url = "https://formhub.org/api/v1/data/" + FHLogin
     result = requests.get(url, auth=(FHLogin, FHPass))
