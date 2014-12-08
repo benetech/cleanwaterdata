@@ -17,9 +17,9 @@ def index(request, country_name):
     if country_name == "costarica":
         FHLogin = "cleanwatercr"
         FHPass = "cleanwaterpass"
-    elif country_name == "ecuador":
-        FHLogin = "cleanwaterec"
-        FHPass = "cleanwaterpass"
+    # elif country_name == "ecuador":
+    #     FHLogin = "cleanwaterec"
+    #     FHPass = "cleanwaterpass"
     elif country_name == "adamb":
         FHLogin = "adamb"
         FHPass = "cleanwaterpass"
